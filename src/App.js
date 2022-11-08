@@ -12,18 +12,20 @@ export default function App() {
         }}
       >
         <div>
-          <Weather className="container" />
-        </div>
+          <div className="container">
+            <Weather />
+          </div>
 
-        <div className="open-source-link">
-          <a
-            href="https://github.com/bjohne/weather-app-react"
-            target="_blank"
-            rel="noreferrer"
-          >
-            Open-source code&nbsp;
-          </a>
-          by Betina Johne
+          <div className="open-source-link">
+            <a
+              href="https://github.com/bjohne/weather-app-react"
+              target="_blank"
+              rel="noreferrer"
+            >
+              Open-source code&nbsp;
+            </a>
+            by Betina Johne
+          </div>
         </div>
       </div>
     </div>

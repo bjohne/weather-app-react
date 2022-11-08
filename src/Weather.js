@@ -29,7 +29,7 @@ export default function Weather() {
     setCity(event.target.value);
   }
   let form = (
-    <div className="container row">
+    <div className="row">
       <div className="col-sm-6">
         <div className="form">
           <form onSubmit={showCity}>
@@ -42,7 +42,7 @@ export default function Weather() {
               <i className="fas fa-search"></i>
             </button>
           </form>
-          <button id="btn-currentLocation">
+          <button className="btn-currentLocation">
             <i className="fas fa-map-marker-alt"></i>
           </button>
         </div>
@@ -60,7 +60,7 @@ export default function Weather() {
           </ul>
         </div>{" "}
       </div>
-      <div className="CurrentWeather">
+      <div className="currentWeather">
         <h1 className="currentTemperature">{weather.temperature}°C</h1>
         <p className="currentIcon">
           <img src={weather.icon} alt={weather.description} />
