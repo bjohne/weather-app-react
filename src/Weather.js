@@ -1,84 +1,107 @@
-import React, { useState } from "react";
 import axios from "axios";
+import React, { useState } from "react";
+import "./Weather.css";
+import FormattedDate from "./FormattedDate";
+import { Circles } from "react-loader-spinner";
 
-export default function Weather() {
-  const [city, setCity] = useState("Amsterdam");
-  const [loaded, setLoaded] = useState(false);
-  const [weather, setWeather] = useState({});
+export default function Weather(props) {
+  const [weatherData, setWeatherData] = useState({ ready: false });
 
-  function showWeather(response) {
-    setLoaded(true);
-    setWeather({
-      temperature: Math.round(response.data.main.temp),
-      description: response.data.weather[0].description,
-      humidity: response.data.main.humidity,
+  function handleResponse(response) {
+    console.log(response);
+    setWeatherData({
+      ready: true,
+      temperature: Math.round(response.data.temperature.current),
       wind: Math.round(response.data.wind.speed),
-      icon: `http://openweathermap.org/img/wn/${response.data.weather[0].icon}@2x.png`,
+      humidity: response.data.temperature.humidity,
+      city: response.data.city,
+      description: response.data.condition.description,
+      iconUrl:
+        "http://shecodes-assets.s3.amazonaws.com/api/weather/icons/clear-sky-day.png",
+      date: new Date(response.data.time * 1000),
     });
   }
 
-  function showCity(event) {
-    event.preventDefault();
+  if (weatherData.ready) {
+    return (
+      <div className="Weather">
+        <div className="row">
+          <div className="col-sm-6">
+            <form className="form">
+              <input
+                type="search"
+                placeholder="Enter city"
+                autoComplete="off"
+              />
+              <button>
+                <i className="fas fa-search"></i>
+              </button>
 
-    let apiKey = "85504bf7b1be17a8a141d12a004a2570";
-    let apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`;
-
-    axios.get(apiUrl).then(showWeather);
-  }
-  function updateCity(event) {
-    setCity(event.target.value);
-  }
-  let form = (
-    <div className="row">
-      <div className="col-sm-6">
-        <div className="form">
-          <form onSubmit={showCity}>
-            <input
-              type="search"
-              placeholder="Enter a city"
-              onChange={updateCity}
-            />
-            <button>
-              <i className="fas fa-search"></i>
-            </button>
-          </form>
-          <button className="btn-currentLocation">
-            <i className="fas fa-map-marker-alt"></i>
-          </button>
+              <button className="btn-currentLocation">
+                <i className="fas fa-map-marker-alt"></i>
+              </button>
+            </form>
+            <br />
+          </div>
+          <div className="col-sm-2"></div>
+          <div className="col-sm-4">
+            <div className="cityFirst">{weatherData.city}</div>
+            <br />
+            <ul className="list-group">
+              <li>
+                Humidity:{""}
+                <span className="humidity"> {weatherData.humidity}</span> %
+              </li>
+              <li>
+                Wind:{""}
+                <span className="wind"> {weatherData.wind}</span> km/h
+              </li>
+              <li className="currentDescription text-capitalize">
+                {weatherData.description}
+              </li>
+            </ul>
+          </div>
         </div>
-      </div>
-      <div className="col-sm-2"></div>
-      <div className="col-sm-4">
-        <div className="Cityfirst">
-          {city}
-          <div />
-          <br />
-          <ul className="list-group">
-            <li>Humidity: {weather.humidity} %</li>
-            <li>Wind: {weather.wind} km/h</li>
-            <li className="currentDescription">{weather.description}</li>
-          </ul>
-        </div>{" "}
-      </div>
-      <div className="currentWeather">
-        <h1 className="currentTemperature">{weather.temperature}°C</h1>
+        <h1 className="currentTemperature">
+          <span className="currentTempDegrees">{weatherData.temperature}</span>
+          <span className="currentTempUnit">°C</span>
+        </h1>
         <p className="currentIcon">
-          <img src={weather.icon} alt={weather.description} />
+          <img src={weatherData.iconUrl} alt="Icon" />
         </p>
-        <p className="forecast-text">
-          This week's weather in <span className="Citysecond">{city}</span>
+        <div className="forecast-text">
+          This week's weather in {""}
+          <span className="citySecond">{weatherData.city}</span>
           <br />
-          <span id="last-update">
-            last update : <span id="current-date"></span>
-          </span>
-        </p>
+          <div className="last-update">
+            last update :{" "}
+            <span className="current-date">
+              <FormattedDate date={weatherData.date} />
+            </span>
+          </div>
+        </div>
         <br />
+        <div className="weather-forecast"></div>
       </div>
-    </div>
-  );
-  if (loaded) {
-    return <div>{form}</div>;
+    );
   } else {
-    return form;
+    let units = "metric";
+
+    const apiKey = "31596ta47a643ofdbb992da3f1ed09dc";
+    let apiUrl = `https://api.shecodes.io/weather/v1/current?query=${props.defaultCity}&key=${apiKey}&units=${units}`;
+
+    axios.get(apiUrl).then(handleResponse);
+
+    return (
+      <Circles
+        height="80"
+        width="80"
+        color="#EBB219"
+        ariaLabel="circles-loading"
+        wrapperStyle={{}}
+        wrapperClass=""
+        visible={true}
+      />
+    );
   }
 }
