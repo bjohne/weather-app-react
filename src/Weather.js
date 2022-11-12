@@ -1,14 +1,13 @@
 import axios from "axios";
 import React, { useState } from "react";
 import "./Weather.css";
-import FormattedDate from "./FormattedDate";
+import WeatherInfo from "./WeatherInfo";
 import { Circles } from "react-loader-spinner";
 
 export default function Weather(props) {
   const [weatherData, setWeatherData] = useState({ ready: false });
 
   function handleResponse(response) {
-    console.log(response);
     setWeatherData({
       ready: true,
       temperature: Math.round(response.data.temperature.current),
@@ -37,52 +36,7 @@ export default function Weather(props) {
           </button>
         </form>
         <br />
-        <h1 className="cityFirst">{weatherData.city}</h1>
-
-        <div className="row">
-          <div className="col-sm-6">
-            <div className=" currentTemperature">
-              <img
-                className="currentIcon"
-                src={weatherData.iconUrl}
-                alt="Icon"
-              />
-              <span className="currentTempDegrees">
-                {weatherData.temperature}
-              </span>
-              <span className="currentTempUnit">°C</span>
-            </div>
-          </div>
-          <div className="col-sm-6">
-            <ul className="list-group">
-              <li>
-                Humidity:{""}
-                <span className="humidity"> {weatherData.humidity}</span> %
-              </li>
-              <li>
-                Wind:{""}
-                <span className="wind"> {weatherData.wind}</span> km/h
-              </li>
-              <li className="currentDescription text-capitalize">
-                {weatherData.description}
-              </li>
-            </ul>
-          </div>
-        </div>
-
-        <div className="forecast-text">
-          This week's weather in {""}
-          <span className="citySecond">{weatherData.city}</span>
-          <br />
-          <div className="last-update">
-            last update :{" "}
-            <span className="current-date">
-              <FormattedDate date={weatherData.date} />
-            </span>
-          </div>
-        </div>
-        <br />
-        <div className="weather-forecast"></div>
+        <WeatherInfo data={weatherData} />
       </div>
     );
   } else {
