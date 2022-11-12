@@ -6,6 +6,7 @@ import { Circles } from "react-loader-spinner";
 
 export default function Weather(props) {
   const [weatherData, setWeatherData] = useState({ ready: false });
+  const [city, setCity] = useState(props.defaultCity);
 
   function handleResponse(response) {
     setWeatherData({
@@ -20,12 +21,31 @@ export default function Weather(props) {
       date: new Date(response.data.time * 1000),
     });
   }
+  function search() {
+    let units = "metric";
 
+    const apiKey = "31596ta47a643ofdbb992da3f1ed09dc";
+    let apiUrl = `https://api.shecodes.io/weather/v1/current?query=${city}&key=${apiKey}&units=${units}`;
+
+    axios.get(apiUrl).then(handleResponse);
+  }
+  function handleSubmit(event) {
+    event.preventDefault();
+    search();
+  }
+  function handleCityChange(event) {
+    setCity(event.target.value);
+  }
   if (weatherData.ready) {
     return (
       <div className="Weather">
-        <form className="form">
-          <input type="search" placeholder="Enter city" autoComplete="off" />
+        <form className="form" onSubmit={handleSubmit}>
+          <input
+            type="search"
+            placeholder="Enter city"
+            autoComplete="off"
+            onChange={handleCityChange}
+          />
           {""}
           <button>
             <i className="fas fa-search"></i>
@@ -40,13 +60,7 @@ export default function Weather(props) {
       </div>
     );
   } else {
-    let units = "metric";
-
-    const apiKey = "31596ta47a643ofdbb992da3f1ed09dc";
-    let apiUrl = `https://api.shecodes.io/weather/v1/current?query=${props.defaultCity}&key=${apiKey}&units=${units}`;
-
-    axios.get(apiUrl).then(handleResponse);
-
+    search();
     return (
       <Circles
         height="80"
