@@ -16,6 +16,7 @@
   border: 10px solid transparent;
   border-radius: 8px;
   margin-block-end: 20px;
+  margin-left: 10px;
   transition: all 150ms ease-in-out;
 }
 
@@ -35,6 +36,23 @@
   color: rgb(225, 228, 232, 0.8);
 }
 
+.currentIcon {
+  font-size: 60px;
+  margin-bottom: 20px;
+}
+.currentTemperature {
+  font-size: 64px;
+  line-height: 2em;
+}
+.currentTempUnit {
+  font-size: 20px;
+  line-height: 1;
+  position: relative;
+  top: -30px;
+}
+.list-group {
+  margin-top: 20px;
+}
 .list-group li {
   color: #0e3b68;
   font-size: 17px;
@@ -44,19 +62,8 @@
 .currentDescription:first-letter {
   text-transform: capitalize;
 }
-h1 {
-  text-align: center;
-  font-size: 50px;
-  line-height: 2em;
-  margin-bottom: -3.5rem;
-}
-.currentIcon {
-  text-align: center;
-  font-size: 60px;
-  margin-top: 20px;
-  margin-bottom: -1rem;
-}
-.forecast-icon {
+
+.weather-forecast-icon {
   text-align: center;
 }
 

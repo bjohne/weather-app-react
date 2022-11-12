@@ -25,28 +25,35 @@ export default function Weather(props) {
   if (weatherData.ready) {
     return (
       <div className="Weather">
+        <form className="form">
+          <input type="search" placeholder="Enter city" autoComplete="off" />
+          {""}
+          <button>
+            <i className="fas fa-search"></i>
+          </button>
+          {""}
+          <button className="btn-currentLocation">
+            <i className="fas fa-map-marker-alt"></i>
+          </button>
+        </form>
+        <br />
+        <h1 className="cityFirst">{weatherData.city}</h1>
+
         <div className="row">
           <div className="col-sm-6">
-            <form className="form">
-              <input
-                type="search"
-                placeholder="Enter city"
-                autoComplete="off"
+            <div className=" currentTemperature">
+              <img
+                className="currentIcon"
+                src={weatherData.iconUrl}
+                alt="Icon"
               />
-              <button>
-                <i className="fas fa-search"></i>
-              </button>
-
-              <button className="btn-currentLocation">
-                <i className="fas fa-map-marker-alt"></i>
-              </button>
-            </form>
-            <br />
+              <span className="currentTempDegrees">
+                {weatherData.temperature}
+              </span>
+              <span className="currentTempUnit">°C</span>
+            </div>
           </div>
-          <div className="col-sm-2"></div>
-          <div className="col-sm-4">
-            <div className="cityFirst">{weatherData.city}</div>
-            <br />
+          <div className="col-sm-6">
             <ul className="list-group">
               <li>
                 Humidity:{""}
@@ -62,13 +69,7 @@ export default function Weather(props) {
             </ul>
           </div>
         </div>
-        <h1 className="currentTemperature">
-          <span className="currentTempDegrees">{weatherData.temperature}</span>
-          <span className="currentTempUnit">°C</span>
-        </h1>
-        <p className="currentIcon">
-          <img src={weatherData.iconUrl} alt="Icon" />
-        </p>
+
         <div className="forecast-text">
           This week's weather in {""}
           <span className="citySecond">{weatherData.city}</span>
